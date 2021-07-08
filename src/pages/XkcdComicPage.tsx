@@ -3,6 +3,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import XkcdComicCard from '../components/XkcdComicCard';
 import {RouteProp} from '@react-navigation/native';
 import {StackParamList} from './XkcdListPage';
+import {ScrollView} from 'react-native';
 
 type Props = {
   navigation: StackNavigationProp<StackParamList, 'Comic'>;
@@ -11,11 +12,13 @@ type Props = {
 
 const XkcdComicPage: React.FC<Props> = ({navigation, route}) => {
   return (
-    <XkcdComicCard
-      comicJson={route.params.comicJson}
-      screen={'Comic'}
-      navigation={navigation}
-    />
+    <ScrollView>
+      <XkcdComicCard
+        comicJson={route.params.comicJson}
+        screen={'Comic'}
+        navigation={navigation}
+      />
+    </ScrollView>
   );
 };
 

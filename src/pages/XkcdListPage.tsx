@@ -1,9 +1,9 @@
 import React from 'react';
-import {NativeScrollEvent, ScrollView, View} from 'react-native';
+import {NativeScrollEvent, ScrollView, StyleSheet, View} from 'react-native';
 import XkcdComicCard from '../components/XkcdComicCard';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {useState} from 'react';
-import {ActivityIndicator} from 'react-native-paper';
+import {ActivityIndicator, Colors} from 'react-native-paper';
 
 interface ComicParams {
   comicJson: ComicJson;
@@ -26,11 +26,18 @@ export type ComicJson = {
 export type StackParamList = {
   Home: any;
   Comic: ComicParams;
+  History: any;
 };
 
 type Props = {
   navigation: StackNavigationProp<StackParamList, 'Home'>;
 };
+
+const styles = StyleSheet.create({
+  activityIndicatorView: {
+    marginVertical: 30,
+  },
+});
 
 let xkcdComicCards: (JSX.Element | null)[] = [];
 let comicJsons: ComicJson[] = [];
@@ -93,8 +100,8 @@ const XkcdListPage: React.FC<Props> = ({navigation}) => {
       }}
       scrollEventThrottle={1000}>
       {[...xkcdComicCards]}
-      <View style={{marginVertical: 30}}>
-        <ActivityIndicator animating={isLoading} />
+      <View style={styles.activityIndicatorView}>
+        <ActivityIndicator animating={isLoading} color={Colors.black} />
       </View>
     </ScrollView>
   );
