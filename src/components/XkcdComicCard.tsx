@@ -1,25 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import {Card, Title, Paragraph, ActivityIndicator} from 'react-native-paper';
+import React from 'react';
+import {Card, Title, Paragraph} from 'react-native-paper';
 import {View, StyleSheet, Pressable} from 'react-native';
 import FullWidthImage from 'react-native-fullwidth-image';
 import {StackNavigationProp} from '@react-navigation/stack';
-interface IProps {
-  comicNum: number;
-  navigation: StackNavigationProp<any>;
-}
-
-interface IComicJson {
-  month: string;
-  num: number;
-  link: string;
-  year: string;
-  news: string;
-  safe_title: string;
-  transcript: string;
-  alt: string;
-  img: string;
-  title: string;
-  day: string;
+import {ComicJson, StackParamList} from '../pages/XkcdListPage';
+interface ComicProps {
+  comicJson: ComicJson;
+  screen: string;
+  navigation: StackNavigationProp<StackParamList, 'Home' | 'Comic'>;
 }
 
 const styles = StyleSheet.create({
@@ -30,41 +18,45 @@ const styles = StyleSheet.create({
   },
 });
 
-const XkcdComicCard: React.FC<IProps> = ({comicNum, navigation}) => {
-  const [isLoading, setLoading] = useState(false);
-  const [comicJson, setComicJson] = useState<IComicJson>({} as IComicJson);
-
-  useEffect(() => {
-    setLoading(true);
-    const getComicJson = () => {
-      let jsonUrl = 'https://xkcd.com/' + comicNum.toString() + '/info.0.json';
-      fetch(jsonUrl)
-        .then(response => response.json())
-        .then(json => setComicJson(json))
-        .catch(error => console.error(error))
-        .finally(() => setLoading(false));
-    };
-    getComicJson();
-  }, [comicNum]);
-
-  return isLoading ? (
-    <ActivityIndicator animating={true} />
-  ) : (
-    <View style={styles.container}>
-      <Pressable
-        onPress={() => {
-          navigation.navigate('Comic', {comicNum: comicNum});
-        }}>
+const XkcdComicCard: React.FC<ComicProps> = ({
+  comicJson,
+  screen,
+  navigation,
+}) => {
+  if (screen === 'Comic' && comicJson) {
+    return (
+      <View style={styles.container}>
         <Card>
           <Card.Content>
             <FullWidthImage source={{uri: comicJson.img}} />
             <Title>{comicJson.title}</Title>
-            <Paragraph>{comicJson.alt}</Paragraph>
+            <Paragraph>Description: {comicJson.alt}</Paragraph>
+            <Paragraph>Transcript: {comicJson.transcript}</Paragraph>
           </Card.Content>
         </Card>
-      </Pressable>
-    </View>
-  );
+      </View>
+    );
+  } else if (screen === 'Home' && comicJson) {
+    return (
+      <View style={styles.container}>
+        <Pressable
+          onPress={() => {
+            navigation.navigate('Comic', {
+              comicJson: comicJson,
+            });
+          }}>
+          <Card>
+            <Card.Content>
+              <FullWidthImage source={{uri: comicJson.img}} />
+              <Title>{comicJson.title}</Title>
+            </Card.Content>
+          </Card>
+        </Pressable>
+      </View>
+    );
+  } else {
+    return <View />;
+  }
 };
 
 export default XkcdComicCard;

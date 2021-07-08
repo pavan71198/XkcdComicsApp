@@ -1,13 +1,9 @@
 import React from 'react';
 import XkcdListPage from './src/pages/XkcdListPage';
+import {StackParamList} from './src/pages/XkcdListPage';
 import XkcdComicPage from './src/pages/XkcdComicPage';
 import {createStackNavigator} from '@react-navigation/stack';
 import * as native from '@react-navigation/native';
-
-type StackParamList = {
-  Home: any;
-  Comic: {comicNum: number};
-};
 
 const Stack = createStackNavigator<StackParamList>();
 

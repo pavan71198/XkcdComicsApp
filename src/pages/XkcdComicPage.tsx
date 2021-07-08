@@ -2,15 +2,7 @@ import React from 'react';
 import {StackNavigationProp} from '@react-navigation/stack';
 import XkcdComicCard from '../components/XkcdComicCard';
 import {RouteProp} from '@react-navigation/native';
-
-interface IParams {
-  comicNum: number;
-}
-
-type StackParamList = {
-  Home: undefined;
-  Comic: IParams;
-};
+import {StackParamList} from './XkcdListPage';
 
 type Props = {
   navigation: StackNavigationProp<StackParamList, 'Comic'>;
@@ -19,7 +11,11 @@ type Props = {
 
 const XkcdComicPage: React.FC<Props> = ({navigation, route}) => {
   return (
-    <XkcdComicCard comicNum={route.params.comicNum} navigation={navigation} />
+    <XkcdComicCard
+      comicJson={route.params.comicJson}
+      screen={'Comic'}
+      navigation={navigation}
+    />
   );
 };
 
